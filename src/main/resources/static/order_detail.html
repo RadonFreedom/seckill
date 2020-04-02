@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>订单详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- jquery -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="http://101.200.195.67:8081/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="http://101.200.195.67:8081/bootstrap/js/bootstrap.min.js"></script>
+    <!-- jquery-validator -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/jquery-validation/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://101.200.195.67:8081/jquery-validation/localization/messages_zh.min.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/layer/layer.js"></script>
+    <!-- md5.js -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/md5.min.js"></script>
+    <!-- common.js -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/common.js"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">秒杀订单详情</div>
+    <table class="table" id="goodslist">
+        <tr>
+            <td>商品名称</td>
+            <td colspan="3" id="goodName"></td>
+        </tr>
+        <tr>
+            <td>商品图片</td>
+            <td colspan="2"><img id="goodImg" width="200" height="200"/></td>
+        </tr>
+        <tr>
+            <td>商品价格</td>
+            <td colspan="2" id="goodPrice"></td>
+        </tr>
+        <tr>
+            <td>订单价格</td>
+            <td colspan="2" id="orderPrice"></td>
+        </tr>
+        <tr>
+            <td>下单时间</td>
+            <td id="createDate" colspan="2"></td>
+        </tr>
+        <tr>
+            <td>订单状态</td>
+            <td id="orderStatus">
+            </td>
+            <td>
+                <button class="btn btn-primary btn-block" type="submit" id="payButton">立即支付</button>
+            </td>
+        </tr>
+        <tr>
+            <td>收货人</td>
+            <td colspan="2">123321</td>
+        </tr>
+        <tr>
+            <td>收货地址</td>
+            <td colspan="2">111111</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+<script src="js/order.js"></script>
+<script>
+    getOrderDetail();
+</script>

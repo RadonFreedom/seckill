@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>商品详情 tryboot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- jquery -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="http://101.200.195.67:8081/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="http://101.200.195.67:8081/bootstrap/js/bootstrap.min.js"></script>
+    <!-- jquery-validator -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/jquery-validation/jquery.validate.min.js"></script>
+    <script type="text/javascript"
+            src="http://101.200.195.67:8081/jquery-validation/localization/messages_zh.min.js"></script>
+    <!-- layer -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/layer/layer.js"></script>
+    <!-- md5.js -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/md5.min.js"></script>
+    <!-- common.js -->
+    <script type="text/javascript" src="http://101.200.195.67:8081/js/common.js"></script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background: url('/img/bg2.jpg') no-repeat;
+            background-size: 100% 100%;
+        }
+
+        #goodlist td {
+            border-top: 1px solid #39503f61;
+        }
+    </style>
+</head>
+
+<body>
+<div class="panel panel-default" style="height:100%;background-color:rgba(222,222,222,0.8)">
+    <div class="panel-heading">秒杀商品详情</div>
+    <table class="table" id="goodlist">
+        <tr>
+            <td>商品名称</td>
+            <td colspan="3" id="goodName"></td>
+        </tr>
+        <tr>
+            <td>商品图片</td>
+            <td colspan="3"><img id="goodImg" width="200" height="200"/></td>
+        </tr>
+        <tr>
+            <td>秒杀开始时间</td>
+            <td id="startTime"></td>
+            <td>
+                <input type="hidden" id="remainSeconds"/>
+                <span id="seckillTip"></span>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="form-inline">
+                        <img id="verifyCodeImg" width="80" height="32" style="display:none"
+                             onclick="refreshVerifyCode()"/>
+                        <input id="verifyCode" class="form-control" content="请输入验证码" style="display:none"/>
+                        <button class="btn btn-primary" type="button" id="buyButton" onclick="getSeckillPath()">立即秒杀
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" name="seckillGoodId" id="seckillGoodId"/>
+            </td>
+        </tr>
+        <tr>
+            <td>商品原价</td>
+            <td colspan="3" id="goodPrice"></td>
+        </tr>
+        <tr>
+            <td>秒杀价</td>
+            <td colspan="3" id="seckillPrice"></td>
+        </tr>
+        <tr>
+            <td>库存数量</td>
+            <td colspan="3" id="stockCount"></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="js/good.js"></script>
+<script src="js/seckill.js"></script>
+<script>
+    getGoodDetail();
+</script>
+</html>

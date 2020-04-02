@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: seckill
+
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: King@mysq1
+
+logging:
+  level:
+#    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG

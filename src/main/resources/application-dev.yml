@@ -1,0 +1,3 @@
+spring:
+  datasource:
+    url: jdbc:mysql://101.200.195.67:3306/seckill
