@@ -1,19 +1,10 @@
-function refreshVerifyCode() {
-    $("#verifyCodeImg").attr("src", "/seckill/verifyCode?seckillGoodId=" + $("#seckillGoodId").val());
-}
-
 function getSeckillPath() {
-
-    const token = getOauthTokenFromStorage();
     const seckillGoodId = $("#seckillGoodId").val();
-    const verifyCode = $("#verifyCode").val();
     $.ajax({
         url: "/seckill/path",
         type: "POST",
-        headers: {'Authorization': 'Bearer ' + token},
         data: {
-            seckillGoodId: seckillGoodId,
-            verifyCode: verifyCode
+            seckillGoodId: seckillGoodId
         },
         success: function (result) {
             if (result.success == true) {
@@ -21,7 +12,6 @@ function getSeckillPath() {
                 doSeckill(path, token);
             } else {
                 layer.msg(result.msg);
-                refreshVerifyCode();
             }
         },
         error: function (xhr) {
@@ -48,7 +38,6 @@ function doSeckill(path, token) {
                 getSeckillResult(token, seckillGoodId);
             } else {
                 layer.msg(result.msg);
-                refreshVerifyCode();
             }
         },
         error: function (xhr) {

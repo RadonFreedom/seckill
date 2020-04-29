@@ -2,7 +2,7 @@ package fre.shown.seckill.module.user.manager;
 
 import fre.shown.seckill.common.domain.ErrorEnum;
 import fre.shown.seckill.common.domain.Result;
-import fre.shown.seckill.module.base.ManagerHelper;
+import fre.shown.seckill.module.base.Manager;
 import fre.shown.seckill.module.user.dao.UserDAO;
 import fre.shown.seckill.module.user.domain.UserDO;
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,8 +25,6 @@ public class UserManager {
 
     @Autowired
     UserDAO userDAO;
-    @Autowired
-    ManagerHelper managerHelper;
 
     public Result<UserDO> findByUsername(String username) {
         if (!existsByUsername(username)) {
@@ -46,10 +43,10 @@ public class UserManager {
     }
 
     public Result<UserDO> save(UserDO userDO) {
-        return managerHelper.save(userDO, userDAO);
+        return Manager.save(userDO, userDAO);
     }
 
     public Result<Boolean> deleteUserByIds(List<Long> ids) {
-        return managerHelper.deleteAllById(ids, userDAO);
+        return Manager.deleteAllById(ids, userDAO);
     }
 }

@@ -22,16 +22,19 @@ public class Result<R> {
     /**
      * 结果数据
      */
+    @Getter
     private R value;
 
     /**
      * 错误或者提示信息
      */
+    @Getter
     private String msg;
 
     /**
      * 响应代码
      */
+    @Getter
     private int code;
 
     private Result(Boolean success, R value, String msg, int code) {
@@ -46,10 +49,6 @@ public class Result<R> {
                 : new Result<>(true, val, "", ErrorEnum.SUCCESS.getCode());
     }
 
-    public static <E> Result<E> error(String msg, int code) {
-        return new Result<>(false, null, msg, code);
-    }
-
     public static <E> Result<E> error(ErrorEnum errorEnum) {
         return error(errorEnum.getMsg(), errorEnum.getCode());
     }
@@ -60,5 +59,9 @@ public class Result<R> {
 
     public static <E> boolean isSuccess(Result<E> result) {
         return result != null && result.success && result.value != null;
+    }
+
+    private static <E> Result<E> error(String msg, int code) {
+        return new Result<>(false, null, msg, code);
     }
 }

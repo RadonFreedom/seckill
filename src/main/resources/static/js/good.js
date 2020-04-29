@@ -1,37 +1,44 @@
-function getGoodsList() {
+function getGoodList() {
 
     $.ajax({
         type: "GET",
-        url: "/good",
+        url: "/seckillGood?page=0&size=10",
         success: function (result) {
             //局部刷新页面数据
             var userDataHtml = "";
-            $.each(result, function (i, seckillGood) {
-                userDataHtml += '<tr>';
-                userDataHtml += '  <td>' + seckillGood.goodDO.goodName + '</td>';
-                userDataHtml += '  <td><img src="' + seckillGood.goodDO.goodImg + '" width="100" height="100" alt="' + seckillGood.goodDO.goodName + '"/></td>';
-                userDataHtml += '  <td>' + seckillGood.goodDO.goodPrice + '</td>';
-                userDataHtml += '  <td>' + seckillGood.seckillPrice + '</td>';
-                userDataHtml += '  <td>' + seckillGood.stockCount + '</td>';
-                userDataHtml += '  <td><a href="/good_detail.html?goodId=' + seckillGood.id + '">详情</a></td>';
-                userDataHtml += '</tr>';
-            });
+            if (result.success === true) {
+                $.each(result.value, function (i, seckillGood) {
+                    userDataHtml += '<tr>';
+                    userDataHtml += '  <td>' + seckillGood.goodName + '</td>';
+                    userDataHtml += '  <td><img src="' + seckillGood.goodImg + '" width="100" height="100" alt="' + seckillGood.goodName + '"/></td>';
+                    userDataHtml += '  <td>' + seckillGood.goodPrice + '</td>';
+                    userDataHtml += '  <td>' + seckillGood.seckillPrice + '</td>';
+                    userDataHtml += '  <td>' + seckillGood.stockCount + '</td>';
+                    userDataHtml += '  <td><a href="/good_detail.html?id=' + seckillGood.id + '">详情</a></td>';
+                    userDataHtml += '</tr>';
+                });
 
-            $("#goods-list").html(userDataHtml);
+                $("#goods-list").html(userDataHtml);
+            } else {
+                layer.msg("服务器请求有误: " + result.msg + " code: " + result.code);
+            }
+        },
+        error: function () {
+            layer.msg("客户端请求有误");
         }
     });
 }
 
 function getGoodDetail() {
-    var goodId = g_getQueryString("goodId");
+    var goodId = g_getQueryString("id");
     $.ajax({
-        url: "/good/" + goodId,
+        url: "/seckillGood/" + goodId,
         type: "GET",
         success: function (result) {
-            if (result.success == true) {
-                renderGoodDetail(result.data);
+            if (result.success === true) {
+                renderGoodDetail(result.value);
             } else {
-                layer.msg(result.msg);
+                layer.msg("服务器请求有误: " + result.msg + " code: " + result.code);
             }
         },
         error: function () {
@@ -41,11 +48,10 @@ function getGoodDetail() {
 }
 
 function renderGoodDetail(seckillGood) {
-    var remainSeconds = seckillGood.remainSeconds;
-    $("#goodName").text(seckillGood.goodDO.goodName);
-    $("#goodImg").attr("src", seckillGood.goodDO.goodImg);
+    $("#goodName").text(seckillGood.goodName);
+    $("#goodImg").attr("src", seckillGood.goodImg);
     $("#startTime").text(new Date(seckillGood.startDate).format("yyyy-MM-dd hh:mm:ss"));
-    $("#remainSeconds").val(remainSeconds);
+    $("#remainSeconds").val(seckillGood.remainSeconds);
     $("#seckillGoodId").val(seckillGood.id);
     $("#goodPrice").text(seckillGood.goodPrice);
     $("#seckillPrice").text(seckillGood.seckillPrice);
@@ -73,14 +79,9 @@ function countDown() {
             clearTimeout(timeout);
         }
         $("#seckillTip").html("秒杀进行中");
-        refreshVerifyCode();
-        $("#verifyCodeImg").show();
-        $("#verifyCode").show();
     } else {
         //秒杀已经结束
         $("#buyButton").attr("disabled", true);
         $("#seckillTip").html("秒杀已经结束");
-        $("#verifyCodeImg").hide();
-        $("#verifyCode").hide();
     }
 }

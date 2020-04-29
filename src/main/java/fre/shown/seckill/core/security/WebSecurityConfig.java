@@ -27,9 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**", "/actuator/**").hasAuthority(String.valueOf(RoleEnum.ADMIN.getId()))
-                .antMatchers("/register", "/static").permitAll()
-                .anyRequest().authenticated()
+//                .antMatchers("/admin/**", "/actuator/**").hasAuthority(String.valueOf(RoleEnum.ADMIN.getId()))
+//                .antMatchers("/register", "/static").permitAll()
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .and()
