@@ -80,6 +80,7 @@ CREATE TABLE `seckillOrder`
     seckillGoodId    bigint unsigned DEFAULT NULL COMMENT '商品ID',
     `deliveryInfoId` bigint unsigned DEFAULT NULL COMMENT '收获地址ID',
     `goodName`       varchar(16)     DEFAULT NULL COMMENT '冗余过来的商品名称',
+    `goodImg`    varchar(64)    DEFAULT NULL COMMENT '商品的图片',
     `goodCnt`      int(11)         DEFAULT '0' COMMENT '商品数量',
     `goodPrice`      decimal(10, 2)  DEFAULT '0.00' COMMENT '商品单价',
     seckillPrice     decimal(10, 2)  DEFAULT '0.00' COMMENT '秒杀价',

@@ -18,8 +18,8 @@ public enum ErrorEnum {
     DATA_CONFLICT(3, "数据冲突！"),
     NO_STOCK(1001, "库存不足！"),
     ORDER_EXISTS(1002, "活动已参与！"),
-    ;
+    PERMISSION_DENIED(1003, "没有权限访问！");
 
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 }

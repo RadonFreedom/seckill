@@ -10,4 +10,5 @@ import fre.shown.seckill.module.order.domain.SeckillOrderDO;
 
 public interface SeckillOrderDAO extends BaseDAO<SeckillOrderDO> {
     Boolean existsByUserIdAndSeckillGoodId(Long userId, Long seckillGoodId);
+    Boolean existsByIdAndUserId(Long id, Long userId);
 }

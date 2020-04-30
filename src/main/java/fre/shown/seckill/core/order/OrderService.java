@@ -14,7 +14,6 @@ import fre.shown.seckill.module.order.dao.SeckillOrderDAO;
 import fre.shown.seckill.module.order.domain.SeckillOrderDO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,7 @@ public class OrderService {
      * @param seckillOrderDTO 秒杀商品id
      * @return 通知前端轮询秒杀结果，或者秒杀失败
      */
+    //TODO 没库存要加Redis标志
     public Result<Boolean> trySeckill(String path, SeckillOrderDTO seckillOrderDTO) {
         if (seckillOrderDTO == null || seckillOrderDTO.getSeckillGoodId() == null) {
             return Result.error(ErrorEnum.PARAM_ERROR);
@@ -86,8 +86,8 @@ public class OrderService {
      * 3. 尝试减库存，如果失败，在Redis中保存结果并返回 <br/>
      * 4. 尝试生成订单信息，如果失败，保存结果并抛出异常（为了让减库存操作回滚）
      *
-     * @param seckillOrderDTO 从消息队列 {@link fre.shown.seckill.common.domain.Constant#SECKILL_ORDER_QUEUE SECKILL_ORDER_QUEUE}
-     *                        中取出下一个要生成的订单信息
+     * @param seckillOrderDTO 消息队列 {@link fre.shown.seckill.common.domain.Constant#SECKILL_ORDER_QUEUE SECKILL_ORDER_QUEUE}
+     *                        中的下一个待生成订单
      */
     @Transactional(rollbackFor = Throwable.class)
     public void createSeckillOrder(SeckillOrderDTO seckillOrderDTO) {
@@ -155,6 +155,7 @@ public class OrderService {
     }
 
     public Result<SeckillOrderDO> getSeckillOrder(Long id) {
-        return Manager.findById(id, seckillOrderDAO);
+        return seckillOrderDAO.existsByIdAndUserId(id, UserUtils.getUserId()) ?
+                Manager.findById(id, seckillOrderDAO) : Result.error(ErrorEnum.PERMISSION_DENIED);
     }
 }
