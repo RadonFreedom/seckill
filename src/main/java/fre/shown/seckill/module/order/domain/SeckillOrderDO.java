@@ -26,7 +26,7 @@ public class SeckillOrderDO {
     private Long seckillGoodId;
     private Long deliveryInfoId;
     private String goodName;
-    private Integer goodCount;
+    private Integer goodCnt;
     private Double goodPrice;
     private Double seckillPrice;
     private Integer orderChannel;

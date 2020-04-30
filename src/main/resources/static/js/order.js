@@ -1,20 +1,18 @@
 function getOrderDetail() {
-    var token = getOauthTokenFromStorage();
     var seckillGoodId = g_getQueryString("orderId");
 
     $.ajax({
         url: "/order/" + seckillGoodId,
         type: "GET",
-        headers: {'Authorization': 'Bearer ' + token},
         success: function (result) {
-            if (result.success == true) {
-                render(result.data);
+            if (result.success === true) {
+                render(result.value);
             } else {
-                layer.msg(result.msg);
+                layer.msg("服务器请求有误: " + result.msg + " code: " + result.code);
             }
         },
-        error: function (xhr) {
-            checkError(xhr);
+        error: function () {
+            layer.msg("客户端请求有误");
         }
     });
 }
@@ -26,9 +24,9 @@ function render(data) {
     $("#orderPrice").text(data.seckillPrice);
     $("#createDate").text(new Date(data.gmtCreate).format("yyyy-MM-dd hh:mm:ss"));
     var status = "";
-    if (data.status == 0) {
+    if (data.status === 0) {
         status = "未支付"
-    } else if (data.status == 1) {
+    } else if (data.status === 1) {
         status = "待发货";
     }
     $("#orderStatus").text(status);

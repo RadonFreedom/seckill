@@ -1,0 +1,42 @@
+package fre.shown.seckill.web;
+
+import fre.shown.seckill.common.domain.Result;
+import fre.shown.seckill.core.order.OrderService;
+import fre.shown.seckill.core.order.domain.SeckillOrderDTO;
+import fre.shown.seckill.module.order.domain.SeckillOrderDO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author Shaman
+ * @date 2020/4/29 14:48
+ */
+@RestController
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @GetMapping("/seckill/path")
+    public Result<String> getSeckillPath(Long seckillGoodId) {
+        return orderService.getSeckillPath(seckillGoodId);
+    }
+
+    @PostMapping("/seckill/{path}")
+    public Result<Boolean> seckill(@PathVariable("path") String path, SeckillOrderDTO seckillOrderDTO) {
+        return orderService.trySeckill(path, seckillOrderDTO);
+    }
+
+    @PostMapping("/seckill/result")
+    public Result<Long> seckillResult(String path) {
+        return orderService.getSeckillResult(path);
+    }
+
+    @GetMapping("/order/{id}")
+    public Result<SeckillOrderDO> getSeckillOrder(@PathVariable("id") Long id) {
+        return orderService.getSeckillOrder(id);
+    }
+}

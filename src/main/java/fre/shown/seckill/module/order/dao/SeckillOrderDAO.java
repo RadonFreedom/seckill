@@ -8,5 +8,6 @@ import fre.shown.seckill.module.order.domain.SeckillOrderDO;
  * @date 2020/4/28 15:38
  */
 
-public interface OrderDAO extends BaseDAO<SeckillOrderDO> {
+public interface SeckillOrderDAO extends BaseDAO<SeckillOrderDO> {
+    Boolean existsByUserIdAndSeckillGoodId(Long userId, Long seckillGoodId);
 }

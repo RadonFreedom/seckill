@@ -1,5 +1,7 @@
-package fre.shown.seckill.core.security;
+package fre.shown.seckill.config;
 
+import fre.shown.seckill.core.security.RoleEnum;
+import fre.shown.seckill.core.security.UserDetailsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,17 +22,17 @@ import java.util.Collections;
  */
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-//                .antMatchers("/admin/**", "/actuator/**").hasAuthority(String.valueOf(RoleEnum.ADMIN.getId()))
-//                .antMatchers("/register", "/static").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/admin/**", "/actuator/**").hasAuthority(String.valueOf(RoleEnum.ADMIN.getId()))
+                .antMatchers("/register", "/static").permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .and()

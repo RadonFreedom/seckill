@@ -1,8 +1,9 @@
 package fre.shown.seckill.core.good;
 
+import fre.shown.seckill.common.domain.ErrorEnum;
 import fre.shown.seckill.common.domain.Result;
 import fre.shown.seckill.common.util.DataUtils;
-import fre.shown.seckill.core.good.domain.SeckillGoodDetailVO;
+import fre.shown.seckill.core.good.domain.SeckillGoodDTO;
 import fre.shown.seckill.core.good.domain.SeckillGoodVO;
 import fre.shown.seckill.module.base.Manager;
 import fre.shown.seckill.module.good.dao.SeckillGoodDAO;
@@ -23,36 +24,40 @@ public class GoodService {
     @Autowired
     SeckillGoodDAO seckillGoodDAO;
 
-    public Result<List<SeckillGoodVO>> getSeckillGoodList(Integer page, Integer size) {
+    public Result<List<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
+        if (page == null || size == null || page < 0 || size <= 0) {
+            return Result.error(ErrorEnum.PARAM_ERROR);
+        }
+
         Result<List<SeckillGoodDO>> seckillGoodDOList = Manager.pageQuery(page, size, seckillGoodDAO);
         if (!Result.isSuccess(seckillGoodDOList)) {
             return Result.error(seckillGoodDOList);
         }
 
-        List<SeckillGoodVO> result = new LinkedList<>();
+        List<SeckillGoodDTO> result = new LinkedList<>();
         for (SeckillGoodDO seckillGoodDO : seckillGoodDOList.getValue()) {
             // 先复制goodDO中的属性，再复制seckillGoodDO中的属性，因为最后id需要从seckillGoodDO中copy
-            SeckillGoodVO seckillGoodVO =new SeckillGoodVO();
-            DataUtils.copyFields(seckillGoodDO.getGoodDO(), seckillGoodVO);
-            DataUtils.copyFields(seckillGoodDO, seckillGoodVO);
-            result.add(seckillGoodVO);
+            SeckillGoodDTO seckillGoodDTO = new SeckillGoodDTO();
+            DataUtils.copyFields(seckillGoodDO.getGoodDO(), seckillGoodDTO);
+            DataUtils.copyFields(seckillGoodDO, seckillGoodDTO);
+            result.add(seckillGoodDTO);
         }
 
         return Result.success(result);
     }
 
-    public Result<SeckillGoodDetailVO> getSeckillGoodDetail(Long id) {
-        Result<SeckillGoodDO> seckillGoodDOResult = Manager.findById(id, seckillGoodDAO);
-        if (!Result.isSuccess(seckillGoodDOResult)) {
-            return Result.error(seckillGoodDOResult);
-        }
-        SeckillGoodDO seckillGoodDO = seckillGoodDOResult.getValue();
-        SeckillGoodDetailVO result =new SeckillGoodDetailVO();
-        DataUtils.copyFields(seckillGoodDO.getGoodDO(), result);
-        DataUtils.copyFields(seckillGoodDO, result);
+    public Result<SeckillGoodVO> getSeckillGoodDetail(Long id) {
 
-        long seckillStartAt = result.getStartDate().getTime();
-        long seckillEndAt = result.getEndDate().getTime();
+        Result<SeckillGoodDTO> seckillGoodDTOResult = getSeckillGoodDTO(id);
+        if (!Result.isSuccess(seckillGoodDTOResult)) {
+            return Result.error(seckillGoodDTOResult);
+        }
+        SeckillGoodDTO seckillGoodDTO = seckillGoodDTOResult.getValue();
+
+        SeckillGoodVO result = new SeckillGoodVO();
+        result.setSeckillGood(seckillGoodDTO);
+        long seckillStartAt = seckillGoodDTO.getStartDate().getTime();
+        long seckillEndAt = seckillGoodDTO.getEndDate().getTime();
         long now = System.currentTimeMillis();
         long remainSeconds;
 
@@ -67,6 +72,23 @@ public class GoodService {
             remainSeconds = 0L;
         }
         result.setRemainSeconds(remainSeconds);
+        return Result.success(result);
+    }
+
+    public Result<SeckillGoodDTO> getSeckillGoodDTO(Long id) {
+        if (id == null || id < 0) {
+            return Result.error(ErrorEnum.PARAM_ERROR);
+        }
+        Result<SeckillGoodDO> seckillGoodDOResult = Manager.findById(id, seckillGoodDAO);
+        if (!Result.isSuccess(seckillGoodDOResult)) {
+            return Result.error(seckillGoodDOResult);
+        }
+        SeckillGoodDO seckillGoodDO = seckillGoodDOResult.getValue();
+        // 先复制goodDO中的属性，再复制seckillGoodDO中的属性，因为最后id需要从seckillGoodDO中copy
+        SeckillGoodDTO result = new SeckillGoodDTO();
+        DataUtils.copyFields(seckillGoodDO.getGoodDO(), result);
+        DataUtils.copyFields(seckillGoodDO, result);
+
         return Result.success(result);
     }
 }

@@ -47,11 +47,12 @@ function getGoodDetail() {
     });
 }
 
-function renderGoodDetail(seckillGood) {
+function renderGoodDetail(data) {
+    var seckillGood = data.seckillGood;
     $("#goodName").text(seckillGood.goodName);
     $("#goodImg").attr("src", seckillGood.goodImg);
     $("#startTime").text(new Date(seckillGood.startDate).format("yyyy-MM-dd hh:mm:ss"));
-    $("#remainSeconds").val(seckillGood.remainSeconds);
+    $("#remainSeconds").val(data.remainSeconds);
     $("#seckillGoodId").val(seckillGood.id);
     $("#goodPrice").text(seckillGood.goodPrice);
     $("#seckillPrice").text(seckillGood.seckillPrice);

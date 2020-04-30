@@ -2,6 +2,7 @@ package fre.shown.seckill.common.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 public class Result<R> {
 
     /**
@@ -37,7 +39,7 @@ public class Result<R> {
     @Getter
     private int code;
 
-    private Result(Boolean success, R value, String msg, int code) {
+    private Result(boolean success, R value, String msg, int code) {
         this.success = success;
         this.value = value;
         this.msg = msg;

@@ -6,13 +6,11 @@ import java.sql.Timestamp;
 
 /**
  * @author Shaman
- * @date 2020/4/28 17:55
+ * @date 2020/4/28 15:12
  */
 
 @Data
-public class SeckillGoodDetailVO {
-
-    private Long remainSeconds;
+public class SeckillGoodDTO {
 
     //** GoodDO的属性 **//
     private String goodName;
