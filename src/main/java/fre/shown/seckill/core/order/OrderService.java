@@ -117,6 +117,8 @@ public class OrderService {
 
             //减库存
             if (seckillGoodDAO.reduceStock(seckillGoodId, seckillOrderDTO.getGoodCnt()) == 0) {
+                //将无库存标志存入Redis
+                redisService.set(NO_STOCK_PREFIX + seckillGoodId,"", TIMEOUT_30, SEC);
                 setSeckillResult(seckillPath, Result.error(ErrorEnum.NO_STOCK));
                 return;
             }
