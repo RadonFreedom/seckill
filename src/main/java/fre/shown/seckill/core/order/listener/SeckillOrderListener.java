@@ -1,6 +1,8 @@
 package fre.shown.seckill.core.order.listener;
 
+import fre.shown.seckill.config.ModeProperties;
 import fre.shown.seckill.core.order.OrderService;
+import fre.shown.seckill.core.order.TestModeOrderService;
 import fre.shown.seckill.core.order.domain.SeckillOrderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +20,22 @@ import static fre.shown.seckill.common.domain.Constant.SECKILL_ORDER_QUEUE;
 @Component
 public class SeckillOrderListener {
 
+    private static final Logger logger = LoggerFactory.getLogger(SeckillOrderListener.class);
     @Autowired
     private OrderService orderService;
-    private static final Logger logger = LoggerFactory.getLogger(SeckillOrderListener.class);
-
+    @Autowired
+    private TestModeOrderService testModeOrderService;
+    @Autowired
+    private ModeProperties modeProperties;
 
     @RabbitListener(queues = SECKILL_ORDER_QUEUE)
     public void onReceived(SeckillOrderDTO seckillOrderDTO) {
         try {
-            orderService.createSeckillOrder(seckillOrderDTO);
+            if (ModeProperties.ModeEnum.PROD.equals(modeProperties.getMode())) {
+                orderService.createSeckillOrder(seckillOrderDTO);
+            } else {
+                testModeOrderService.createSeckillOrder(seckillOrderDTO);
+            }
         } catch (Throwable t) {
             logger.error("消息处理异常！", t);
         }

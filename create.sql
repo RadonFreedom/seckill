@@ -72,29 +72,26 @@ VALUES ('1', '0.01', '9', '2020-12-31 21:51:27'),
        ('3', '0.01', '9', '2020-12-31 14:00:24'),
        ('4', '0.01', '9', '2020-12-31 14:00:24');
 
-
-DROP TABLE IF EXISTS `seckillOrder`;
+drop table if exists seckillOrder;
 CREATE TABLE `seckillOrder`
 (
     `id`             bigint unsigned NOT NULL AUTO_INCREMENT,
-    userId           bigint unsigned,
+    userId           bigint unsigned NOT NULL,
     seckillGoodId    bigint unsigned NOt NULL COMMENT '商品ID',
-    `deliveryInfoId` bigint unsigned NOt NULL COMMENT '收获地址ID',
-    `goodName`       varchar(16)    DEFAULT NULL COMMENT '冗余过来的商品名称',
-    `goodImg`        varchar(64)    DEFAULT NULL COMMENT '商品的图片',
-    `goodCnt`        int(11)        DEFAULT '0' COMMENT '商品数量',
-    `goodPrice`      decimal(10, 2) DEFAULT '0.00' COMMENT '商品单价',
-    seckillPrice     decimal(10, 2) DEFAULT '0.00' COMMENT '秒杀价',
-    `orderChannel`   tinyint(4)     DEFAULT '0' COMMENT '1 pc，2 android，3 ios',
-    `status`         tinyint(4)     DEFAULT '0' COMMENT '订单状态，0新建未支付，1已支付，2已发货，3已收货，4已退款，5已完成',
-    `payDate`        datetime       DEFAULT NULL COMMENT '支付时间',
+    `deliveryInfoId` bigint unsigned default NULL COMMENT '收获地址ID',
+    `goodName`       varchar(16)     DEFAULT NULL COMMENT '冗余过来的商品名称',
+    `goodImg`        varchar(64)     DEFAULT NULL COMMENT '商品的图片',
+    `goodCnt`        int(11)         DEFAULT '0' COMMENT '商品数量',
+    `goodPrice`      decimal(10, 2)  DEFAULT '0.00' COMMENT '商品单价',
+    seckillPrice     decimal(10, 2)  DEFAULT '0.00' COMMENT '秒杀价',
+    `orderChannel`   tinyint(4)      DEFAULT '0' COMMENT '1 pc，2 android，3 ios',
+    `status`         tinyint(4)      DEFAULT '0' COMMENT '订单状态，0新建未支付，1已支付，2已发货，3已收货，4已退款，5已完成',
+    `payDate`        datetime        DEFAULT NULL COMMENT '支付时间',
     gmtCreate        datetime COMMENT '创建时间',
     gmtModified      datetime COMMENT '更新时间',
     PRIMARY KEY pk_id (`id`),
-    constraint `uk_seckillOrder_goodId_userId` UNIQUE KEY (seckillGoodId, `userId`),
     constraint `fk_seckillOrder_userId` foreign KEY (userId) references user (id),
-    constraint `fk_seckillOrder_seckillGoodId` foreign KEY (seckillGoodId) references seckillGood (id)
+    constraint `fk_seckillOrder_seckillGoodId` foreign KEY (seckillGoodId) references seckillGood (id),
+    constraint `uk_seckillOrder_goodId_userId` UNIQUE KEY (seckillGoodId, `userId`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-
-
