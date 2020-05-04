@@ -1,5 +1,6 @@
 package fre.shown.seckill.web;
 
+import fre.shown.seckill.common.domain.Result;
 import fre.shown.seckill.config.ModeProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class ModeController {
     private ModeProperties modeProperties;
 
     @GetMapping("/mode")
-    public String setMode(Integer id) {
+    public Result<Integer> setMode(Integer id) {
         return modeProperties.setMode(id);
     }
 }

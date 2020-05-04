@@ -1,5 +1,7 @@
 package fre.shown.seckill.config;
 
+import fre.shown.seckill.common.domain.ErrorEnum;
+import fre.shown.seckill.common.domain.Result;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -18,16 +20,16 @@ public class ModeProperties {
         mode = ModeEnum.TEST;
     }
 
-    public String setMode(Integer id) {
+    public Result<Integer> setMode(Integer id) {
         if (id == null) {
-            return "param error!";
+            return Result.error(ErrorEnum.PARAM_ERROR);
         }
         for (ModeEnum mode : ModeEnum.values()) {
             if (id.equals(mode.id)) {
                 this.mode = mode;
             }
         }
-        return "mode set to " + this.mode.name;
+        return Result.success(mode.id);
     }
 
     @AllArgsConstructor

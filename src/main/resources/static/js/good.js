@@ -1,5 +1,37 @@
-function getGoodList() {
+function getCurrMode() {
+    let currMode = localStorage.getItem('seckillMode');
+    if (currMode == null) {
+        currMode = "1";
+    }
+    const modeName = currMode === "1" ? '测试模式' : '生产模式';
+    $("#mode").text(modeName);
+    return currMode;
+}
 
+function changeMode() {
+
+    const mode = getCurrMode() === "1" ? 0 : 1;
+
+    $.ajax({
+        type: "GET",
+        url: "/mode?id=" + mode,
+        success: function (result) {
+            if (result.success === true) {
+                const modeName = result.value === 1 ? '测试模式' : '生产模式';
+                $("#mode").text(modeName);
+                localStorage.setItem('seckillMode', result.value);
+            } else {
+                layer.msg("服务器请求有误: " + result.msg + " code: " + result.code);
+            }
+        },
+        error: function () {
+            layer.msg("客户端请求有误");
+        }
+    });
+}
+
+function getGoodList() {
+    getCurrMode();
     $.ajax({
         type: "GET",
         url: "/seckillGood?page=0&size=10",
