@@ -58,19 +58,7 @@ public class RedisService {
         return redisTemplate.hasKey(key);
     }
 
-    public void delete(String key) {
-        redisTemplate.delete(key);
-    }
-
-    /**
-     * 根据key的前缀删除所有键值对
-     *
-     * @param keyPrefix 键前缀
-     */
-    public void deleteKeysByPrefix(String keyPrefix) {
-        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
-        if (keys != null) {
-            redisTemplate.delete(keys);
-        }
+    public Boolean delete(String key) {
+        return redisTemplate.delete(key);
     }
 }

@@ -13,6 +13,8 @@ public class Constant {
     public static final TimeUnit SEC = TimeUnit.SECONDS;
     public static final TimeUnit MILLIS = TimeUnit.MILLISECONDS;
 
+    public static final String NEW_SECKILL_ORDER_QUEUE = "new_seckill_order";
+    public static final String SECKILL_GOOD_QUEUE = "seckill_good";
     public static final String SECKILL_ORDER_QUEUE = "seckill_order";
 
     public static final String SECKILL_PATH_PREFIX = "seckill_path";

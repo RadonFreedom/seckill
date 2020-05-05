@@ -46,7 +46,7 @@ public class TestModeOrderService {
         if (hasStock(seckillOrderDTO.getSeckillGoodId())) {
             seckillOrderDTO.setSeckillPath(path);
             seckillOrderDTO.setUserId(UserUtils.getUserId());
-            amqpTemplate.convertAndSend(SECKILL_ORDER_QUEUE, seckillOrderDTO);
+            amqpTemplate.convertAndSend(NEW_SECKILL_ORDER_QUEUE, seckillOrderDTO);
             return Result.success(true);
         } else {
             return Result.error(ErrorEnum.NO_STOCK);

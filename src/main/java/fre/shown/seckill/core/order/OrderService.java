@@ -72,7 +72,7 @@ public class OrderService {
         if (hasStock(seckillOrderDTO.getSeckillGoodId())) {
             seckillOrderDTO.setSeckillPath(path);
             seckillOrderDTO.setUserId(UserUtils.getUserId());
-            amqpTemplate.convertAndSend(SECKILL_ORDER_QUEUE, seckillOrderDTO);
+            amqpTemplate.convertAndSend(NEW_SECKILL_ORDER_QUEUE, seckillOrderDTO);
             return Result.success(true);
         } else {
             return Result.error(ErrorEnum.NO_STOCK);
@@ -85,7 +85,7 @@ public class OrderService {
      * 3. 尝试减库存，如果失败，在Redis中保存结果并返回 <br/>
      * 4. 尝试生成订单信息，如果失败，保存结果并抛出异常（为了让减库存操作回滚）
      *
-     * @param seckillOrderDTO 消息队列 {@link fre.shown.seckill.common.domain.Constant#SECKILL_ORDER_QUEUE SECKILL_ORDER_QUEUE}
+     * @param seckillOrderDTO 消息队列 {@link fre.shown.seckill.common.domain.Constant#NEW_SECKILL_ORDER_QUEUE SECKILL_ORDER_QUEUE}
      *                        中的下一个待生成订单
      */
     @Transactional(rollbackFor = Throwable.class)
@@ -121,6 +121,10 @@ public class OrderService {
                 setSeckillResult(seckillPath, Result.error(ErrorEnum.NO_STOCK));
                 return;
             }
+            //发送消息，异步同步seckillGoodDTO更改缓存
+            seckillGoodDTO.setStockCount(seckillGoodDTO.getStockCount() - seckillOrderDTO.getGoodCnt());
+            amqpTemplate.convertAndSend(SECKILL_GOOD_QUEUE, seckillGoodDTO);
+
             //生成订单
             SeckillOrderDO seckillOrderDO = DataUtils.copyFields(seckillOrderDTO, new SeckillOrderDO());
             DataUtils.copyFields(seckillGoodDTO, seckillOrderDO);

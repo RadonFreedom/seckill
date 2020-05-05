@@ -10,7 +10,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static fre.shown.seckill.common.domain.Constant.SECKILL_ORDER_QUEUE;
+import static fre.shown.seckill.common.domain.Constant.NEW_SECKILL_ORDER_QUEUE;
 
 /**
  * @author Shaman
@@ -28,7 +28,7 @@ public class SeckillOrderListener {
     @Autowired
     private ModeProperties modeProperties;
 
-    @RabbitListener(queues = SECKILL_ORDER_QUEUE)
+    @RabbitListener(queues = NEW_SECKILL_ORDER_QUEUE)
     public void onReceived(SeckillOrderDTO seckillOrderDTO) {
         try {
             if (ModeProperties.ModeEnum.PROD.equals(modeProperties.getMode())) {

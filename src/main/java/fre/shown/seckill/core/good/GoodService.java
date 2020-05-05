@@ -5,6 +5,7 @@ import fre.shown.seckill.common.domain.Result;
 import fre.shown.seckill.common.util.DataUtils;
 import fre.shown.seckill.core.good.domain.SeckillGoodDTO;
 import fre.shown.seckill.core.good.domain.SeckillGoodVO;
+import fre.shown.seckill.core.redis.RedisService;
 import fre.shown.seckill.module.base.Manager;
 import fre.shown.seckill.module.good.dao.SeckillGoodDAO;
 import fre.shown.seckill.module.good.domain.SeckillGoodDO;
@@ -23,6 +24,8 @@ import java.util.List;
 public class GoodService {
     @Autowired
     SeckillGoodDAO seckillGoodDAO;
+    @Autowired
+    RedisService redisService;
 
     public Result<List<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
         if (page == null || size == null || page < 0 || size <= 0) {
@@ -79,15 +82,21 @@ public class GoodService {
         if (id == null || id < 0) {
             return Result.error(ErrorEnum.PARAM_ERROR);
         }
-        Result<SeckillGoodDO> seckillGoodDOResult = Manager.findById(id, seckillGoodDAO);
-        if (!Result.isSuccess(seckillGoodDOResult)) {
-            return Result.error(seckillGoodDOResult);
+        SeckillGoodDTO result;
+        if (redisService.hasKey(id, SeckillGoodDTO.class)) {
+            result = redisService.getById(id, SeckillGoodDTO.class);
+        } else {
+            Result<SeckillGoodDO> seckillGoodDOResult = Manager.findById(id, seckillGoodDAO);
+            if (!Result.isSuccess(seckillGoodDOResult)) {
+                return Result.error(seckillGoodDOResult);
+            }
+            SeckillGoodDO seckillGoodDO = seckillGoodDOResult.getValue();
+            // 先复制goodDO中的属性，再复制seckillGoodDO中的属性，因为最后id需要从seckillGoodDO中copy
+            result = new SeckillGoodDTO();
+            DataUtils.copyFields(seckillGoodDO.getGoodDO(), result);
+            DataUtils.copyFields(seckillGoodDO, result);
+            redisService.setById(id, result);
         }
-        SeckillGoodDO seckillGoodDO = seckillGoodDOResult.getValue();
-        // 先复制goodDO中的属性，再复制seckillGoodDO中的属性，因为最后id需要从seckillGoodDO中copy
-        SeckillGoodDTO result = new SeckillGoodDTO();
-        DataUtils.copyFields(seckillGoodDO.getGoodDO(), result);
-        DataUtils.copyFields(seckillGoodDO, result);
 
         return Result.success(result);
     }

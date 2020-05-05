@@ -6,7 +6,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static fre.shown.seckill.common.domain.Constant.SECKILL_ORDER_QUEUE;
+import static fre.shown.seckill.common.domain.Constant.*;
 
 /**
  * @author Shaman
@@ -18,8 +18,18 @@ public class MqConfig {
 
 
     @Bean
+    public Queue newSeckillOrderQueue() {
+        return new Queue(NEW_SECKILL_ORDER_QUEUE);
+    }
+
+    @Bean
     public Queue seckillOrderQueue() {
         return new Queue(SECKILL_ORDER_QUEUE);
+    }
+
+    @Bean
+    public Queue seckillGoodQueue() {
+        return new Queue(SECKILL_GOOD_QUEUE);
     }
 
     @Bean
