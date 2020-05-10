@@ -43,7 +43,18 @@ public class OrderService {
         if (seckillGoodId == null || seckillGoodId < 0) {
             return Result.error(ErrorEnum.PARAM_ERROR);
         }
+        Result<SeckillGoodDTO> result = goodService.getSeckillGoodDTO(seckillGoodId);
+        if (!Result.isSuccess(result)) {
+            return Result.error(result);
+        }
+        SeckillGoodDTO seckillGoodDTO = result.getValue();
+        long seckillStartAt = seckillGoodDTO.getStartDate().getTime();
+        long seckillEndAt = seckillGoodDTO.getEndDate().getTime();
+        long now = System.currentTimeMillis();
 
+        if (now < seckillStartAt || now > seckillEndAt) {
+            return Result.error(ErrorEnum.PARAM_ERROR);
+        }
         String path = RandomStringUtils.randomAlphanumeric(20);
         redisService.set(getSeckillPathKey(seckillGoodId), path, TIMEOUT_300, MILLIS);
         return Result.success(path);
