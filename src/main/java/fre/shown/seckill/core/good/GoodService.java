@@ -9,6 +9,7 @@ import fre.shown.seckill.core.redis.RedisService;
 import fre.shown.seckill.module.base.Manager;
 import fre.shown.seckill.module.good.dao.SeckillGoodDAO;
 import fre.shown.seckill.module.good.domain.SeckillGoodDO;
+import fre.shown.seckill.web.domain.PageDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class GoodService {
     @Autowired
     RedisService redisService;
 
-    public Result<List<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
+    public Result<PageDetail<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
         if (page == null || size == null || page < 0 || size <= 0) {
             return Result.error(ErrorEnum.PARAM_ERROR);
         }
@@ -37,16 +38,16 @@ public class GoodService {
             return Result.error(seckillGoodDOList);
         }
 
-        List<SeckillGoodDTO> result = new LinkedList<>();
+        List<SeckillGoodDTO> seckillGoodDTOList = new LinkedList<>();
         for (SeckillGoodDO seckillGoodDO : seckillGoodDOList.getValue()) {
             // 先复制goodDO中的属性，再复制seckillGoodDO中的属性，因为最后id需要从seckillGoodDO中copy
             SeckillGoodDTO seckillGoodDTO = new SeckillGoodDTO();
             DataUtils.copyFields(seckillGoodDO.getGoodDO(), seckillGoodDTO);
             DataUtils.copyFields(seckillGoodDO, seckillGoodDTO);
-            result.add(seckillGoodDTO);
+            seckillGoodDTOList.add(seckillGoodDTO);
         }
 
-        return Result.success(result);
+        return Result.success(new PageDetail<>(seckillGoodDAO.count(), size, seckillGoodDTOList));
     }
 
     public Result<SeckillGoodVO> getSeckillGoodDetail(Long id) {

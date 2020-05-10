@@ -30,16 +30,18 @@ function changeMode() {
     });
 }
 
-function getGoodList() {
+function getGoodList(page) {
     getCurrMode();
     $.ajax({
         type: "GET",
-        url: "/seckillGood?page=0&size=10",
+        url: "/seckillGood?size=5&page=" + (page-1),
         success: function (result) {
             //局部刷新页面数据
             var userDataHtml = "";
+            var pageNumsHtml = "";
             if (result.success === true) {
-                $.each(result.value, function (i, seckillGood) {
+                var pageDetail = result.value;
+                $.each(pageDetail.list, function (i, seckillGood) {
                     userDataHtml += '<tr>';
                     userDataHtml += '  <td>' + seckillGood.goodName + '</td>';
                     userDataHtml += '  <td><img src="' + seckillGood.goodImg + '" width="100" height="100" alt="' + seckillGood.goodName + '"/></td>';
@@ -50,7 +52,16 @@ function getGoodList() {
                     userDataHtml += '</tr>';
                 });
 
+                for (var i = 1; i <= pageDetail.totalPage; i++) {
+                    if (i === page) {
+                        pageNumsHtml += '<li class="active"><a  href="#">' + i + '</a></li>';
+                    } else {
+                        pageNumsHtml += '<li ><a onclick="getGoodList(' + i + ')">' + i + '</a></li>';
+                    }
+                }
+
                 $("#goods-list").html(userDataHtml);
+                $("#pageNums").html(pageNumsHtml);
             } else {
                 layer.msg("服务器请求有误: " + result.msg + " code: " + result.code);
             }

@@ -4,6 +4,7 @@ import fre.shown.seckill.common.domain.Result;
 import fre.shown.seckill.core.good.GoodService;
 import fre.shown.seckill.core.good.domain.SeckillGoodVO;
 import fre.shown.seckill.core.good.domain.SeckillGoodDTO;
+import fre.shown.seckill.web.domain.PageDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class GoodController {
     private GoodService goodService;
 
     @GetMapping("/seckillGood")
-    public Result<List<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
+    public Result<PageDetail<SeckillGoodDTO>> getSeckillGoodList(Integer page, Integer size) {
         return goodService.getSeckillGoodList(page, size);
     }
 
