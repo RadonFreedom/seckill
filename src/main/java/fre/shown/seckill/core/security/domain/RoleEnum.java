@@ -1,4 +1,4 @@
-package fre.shown.seckill.core.security;
+package fre.shown.seckill.core.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

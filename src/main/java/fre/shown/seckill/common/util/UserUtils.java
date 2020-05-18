@@ -1,7 +1,7 @@
 package fre.shown.seckill.common.util;
 
 import fre.shown.seckill.common.domain.ErrorEnum;
-import fre.shown.seckill.core.security.UserDetailsImpl;
+import fre.shown.seckill.core.security.domain.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

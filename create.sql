@@ -62,8 +62,7 @@ CREATE TABLE `seckillGood`
     gmtModified    datetime       default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     constraint `fk_seckillGood_goodId` foreign KEY (goodId) references good (id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB;
 
 INSERT INTO `seckillGood`
     (goodId, seckillPrice, stockCount, endDate)

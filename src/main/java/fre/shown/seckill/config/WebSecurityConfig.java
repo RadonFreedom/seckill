@@ -1,6 +1,6 @@
 package fre.shown.seckill.config;
 
-import fre.shown.seckill.core.security.RoleEnum;
+import fre.shown.seckill.core.security.domain.RoleEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

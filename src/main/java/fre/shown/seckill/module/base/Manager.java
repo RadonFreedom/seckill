@@ -37,8 +37,8 @@ public class Manager {
             return Result.error(ErrorEnum.PARAM_ERROR);
         }
         try {
-            Optional<E> entity = dao.findById(id);
-            return entity.map(Result::success).orElseGet(() -> Result.error(ErrorEnum.RESULT_EMPTY));
+            Optional<E> optional = dao.findById(id);
+            return optional.map(Result::success).orElseGet(() -> Result.error(ErrorEnum.RESULT_EMPTY));
         } catch (Exception e) {
             logger.error(ErrorEnum.RUNTIME_ERROR.getMsg(), e);
             return Result.error(ErrorEnum.RUNTIME_ERROR);

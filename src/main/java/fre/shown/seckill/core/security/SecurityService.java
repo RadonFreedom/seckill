@@ -2,6 +2,7 @@ package fre.shown.seckill.core.security;
 
 import fre.shown.seckill.common.domain.Result;
 import fre.shown.seckill.common.util.DataUtils;
+import fre.shown.seckill.core.security.domain.UserDetailsImpl;
 import fre.shown.seckill.module.user.domain.UserDO;
 import fre.shown.seckill.module.user.manager.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;

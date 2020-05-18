@@ -2,7 +2,7 @@ package fre.shown.seckill.core.user;
 
 import fre.shown.seckill.common.domain.ErrorEnum;
 import fre.shown.seckill.common.domain.Result;
-import fre.shown.seckill.core.security.RoleEnum;
+import fre.shown.seckill.core.security.domain.RoleEnum;
 import fre.shown.seckill.module.user.domain.UserDO;
 import fre.shown.seckill.module.user.manager.UserManager;
 import org.apache.commons.lang3.StringUtils;
