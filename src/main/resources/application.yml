@@ -13,6 +13,11 @@ spring:
     url: jdbc:mysql://localhost:3306/seckill
     username: root
     password: King@mysq1
+  rabbitmq:
+    listener:
+      simple:
+        concurrency: 2
+        max-concurrency: 2
 
 
 logging:
