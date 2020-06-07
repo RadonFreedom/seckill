@@ -34,7 +34,7 @@ function getGoodList(page) {
     getCurrMode();
     $.ajax({
         type: "GET",
-        url: "/seckillGood?size=5&page=" + (page-1),
+        url: "/seckillGood?size=5&page=" + (page - 1),
         success: function (result) {
             //局部刷新页面数据
             var userDataHtml = "";
@@ -100,10 +100,10 @@ function renderGoodDetail(data) {
     $("#goodPrice").text(seckillGood.goodPrice);
     $("#seckillPrice").text(seckillGood.seckillPrice);
     $("#stockCount").text(seckillGood.stockCount);
-    countDown();
+    countDown(seckillGood.stockCount);
 }
 
-function countDown() {
+function countDown(stock) {
     var remainSeconds = $("#remainSeconds").val();
     var timeout;
     if (remainSeconds > 0) {
@@ -113,16 +113,21 @@ function countDown() {
         timeout = setTimeout(function () {
             $("#countDown").text(remainSeconds - 1);
             $("#remainSeconds").val(remainSeconds - 1);
-            countDown();
+            countDown(stock);
         }, 1000);
     } else if (remainSeconds == 0) {
         //秒杀进行中
-        $("#buyButton").attr("disabled", false);
-        //不再进行下次调用
-        if (timeout) {
-            clearTimeout(timeout);
+        if (stock == 0) {
+            $("#buyButton").attr("disabled", true);
+            $("#seckillTip").html("商品无库存");
+        } else {
+            $("#buyButton").attr("disabled", false);
+            //不再进行下次调用
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            $("#seckillTip").html("秒杀进行中");
         }
-        $("#seckillTip").html("秒杀进行中");
     } else {
         //秒杀已经结束
         $("#buyButton").attr("disabled", true);
